@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activerecord"
-  spec.add_dependency "kanal"
+  # spec.add_dependency "kanal"
   spec.add_development_dependency "sqlite3"
 
   # Uncomment to register a new dependency of your gem
