@@ -3,6 +3,7 @@
 require "active_record"
 require "active_record/schema"
 require "kanal/core/plugins/plugin"
+require_relative "./tasks/migrate_task"
 # require_relative "./overriden/version_suffix_migration_context"
 
 module Kanal
@@ -75,6 +76,10 @@ module Kanal
         #
         def migrate
           self.class.migrate
+        end
+
+        def rake_tasks
+          [Kanal::Plugins::ActiveRecord::Tasks::MigrateTask.new]
         end
 
         #

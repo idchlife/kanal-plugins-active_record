@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rake"
+require "rake/tasklib"
 require "optparse"
 
 require_relative "../active_record_plugin"
@@ -37,14 +38,21 @@ module Kanal
 
           def execute_migration_task(yes = false)
             plugin = Kanal::Plugins::ActiveRecord::ActiveRecordPlugin
+            
+            # The problem with this is connection is not REALLY (look NOTE below) established only
+            # thanks to ::ActiveRecord::Base.establish_connection
+            # Migrations can proceed and be executed without checking for connection
+            # NOTE: we can look here
+            # https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionHandler.html#method-i-establish_connection
+            # and learn that there seems no real connection happening. At least, I assume so
 
-            unless plugin.connected?
-              puts "ActiveRecord is not connected to the database.
-Directive 🤖: You should execute this rake task with application or something that has
-this plugin added and initialized (via setup method). In other words: how could I execute migrations,
-if there is no connection to database? 😭"
-              return
-            end
+#             unless plugin.connected?
+#               puts "ActiveRecord is not connected to the database.
+# Directive 🤖: You should execute this rake task with application or something that has
+# this plugin added and initialized (via setup method). In other words: how could I execute migrations,
+# if there is no connection to database? 😭"
+#               return
+#             end
 
             migration_dirs = plugin.migration_directories
 
